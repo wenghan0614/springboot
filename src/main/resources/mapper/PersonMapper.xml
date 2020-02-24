@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.PersonMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.Person" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="create_man_id" property="createManId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_man_id" property="updateManId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="person_no" property="personNo" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="person_photo" property="personPhoto" jdbcType="VARCHAR" />
+    <result column="person_sex" property="personSex" jdbcType="CHAR" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="customer_id_no" property="customerIdNo" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="person_type" property="personType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, create_man_id, create_time, update_man_id, update_time, person_id, person_no, 
+    person_name, person_photo, person_sex, card_no, customer_id_no, state, person_type
+  </sql>
+
+  <!--根据人员编号和人员类型更新人员-->
+  <update id="updatePersonByNoAndType" parameterType="com.venink.slec.entity.Person" >
+    update pm_person
+    <set>
+      <if test="createManId != null" >
+        create_man_id = #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        update_man_id = #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personNo != null" >
+        person_no = #{personNo,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personPhoto != null" >
+        person_photo = #{personPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="personSex != null" >
+        person_sex = #{personSex,jdbcType=CHAR},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerIdNo != null" >
+        customer_id_no = #{customerIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where
+    person_no = #{personNo,jdbcType=VARCHAR}
+    AND
+    person_type = #{personType,jdbcType=VARCHAR}
+  </update>
+
+  <!--查询所有数据-->
+  <select id="queryAllData" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM pm_person
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByCondition" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Person">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM pm_person
+    <where>
+      1=1
+      <if test="personId !=null">
+        AND person_id LIKE CONCAT(CONCAT('%',#{personId}),'%')
+      </if>
+      <if test="personNo !=null">
+        AND person_no LIKE CONCAT(CONCAT('%',#{personNo}),'%')
+      </if>
+      <if test="personName !=null">
+        AND person_name LIKE CONCAT(CONCAT('%',#{personName}),'%')
+      </if>
+    </where>
+    LIMIT #{start},#{end};
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByConditionWithoutLimit" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Person">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM pm_person
+    <where>
+      1=1
+      <if test="personId !=null">
+        AND person_id LIKE CONCAT(CONCAT('%',#{personId}),'%')
+      </if>
+      <if test="personNo !=null">
+        AND person_no LIKE CONCAT(CONCAT('%',#{personNo}),'%')
+      </if>
+      <if test="personName !=null">
+        AND person_name LIKE CONCAT(CONCAT('%',#{personName}),'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pm_person
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pm_person
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.Person" >
+    insert into pm_person (id, create_man_id, create_time, 
+      update_man_id, update_time, person_id, 
+      person_no, person_name, person_photo, 
+      person_sex, card_no, customer_id_no, 
+      state, person_type)
+    values (#{id,jdbcType=INTEGER}, #{createManId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateManId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{personId,jdbcType=VARCHAR}, 
+      #{personNo,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, #{personPhoto,jdbcType=VARCHAR}, 
+      #{personSex,jdbcType=CHAR}, #{cardNo,jdbcType=VARCHAR}, #{customerIdNo,jdbcType=VARCHAR}, 
+      #{state,jdbcType=CHAR}, #{personType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.Person" >
+    insert into pm_person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createManId != null" >
+        create_man_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateManId != null" >
+        update_man_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="personNo != null" >
+        person_no,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="personPhoto != null" >
+        person_photo,
+      </if>
+      <if test="personSex != null" >
+        person_sex,
+      </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
+      <if test="customerIdNo != null" >
+        customer_id_no,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="personType != null" >
+        person_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createManId != null" >
+        #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personNo != null" >
+        #{personNo,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personPhoto != null" >
+        #{personPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="personSex != null" >
+        #{personSex,jdbcType=CHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerIdNo != null" >
+        #{customerIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="personType != null" >
+        #{personType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.Person" >
+    update pm_person
+    <set >
+      <if test="createManId != null" >
+        create_man_id = #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        update_man_id = #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personNo != null" >
+        person_no = #{personNo,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personPhoto != null" >
+        person_photo = #{personPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="personSex != null" >
+        person_sex = #{personSex,jdbcType=CHAR},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerIdNo != null" >
+        customer_id_no = #{customerIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="personType != null" >
+        person_type = #{personType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.Person" >
+    update pm_person
+    set create_man_id = #{createManId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_man_id = #{updateManId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      person_id = #{personId,jdbcType=VARCHAR},
+      person_no = #{personNo,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      person_photo = #{personPhoto,jdbcType=VARCHAR},
+      person_sex = #{personSex,jdbcType=CHAR},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      customer_id_no = #{customerIdNo,jdbcType=VARCHAR},
+      state = #{state,jdbcType=CHAR},
+      person_type = #{personType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

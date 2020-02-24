@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.Admin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="head_picture" property="headPicture" jdbcType="VARCHAR" />
+    <result column="add_date" property="addDate" jdbcType="DATE" />
+    <result column="update_date" property="updateDate" jdbcType="DATE" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, email, password, real_name, age, phone_number, head_picture, add_date, 
+    update_date, state
+  </sql>
+
+  <!--验证账号密码--> <!--queryByAdmin insertAdmin updateAdmin-->
+  <select id="queryByAdmin" resultMap="BaseResultMap" parameterType="com.venink.slec.entity.User">
+    SELECT * FROM  admin WHERE user_name = #{userName} AND password = #{password} AND state = 0
+  </select>
+
+  <!--查找用户是否已经存在-->
+  <select id="hasExisted" resultMap="BaseResultMap" parameterType="com.venink.slec.entity.User">
+    SELECT * FROM  admin WHERE user_name = #{userName}
+  </select>
+
+  <!--useGeneratedKeys="true" 插入 成功 返回主键的值-->
+  <insert id="insertAdmin" useGeneratedKeys="true" parameterType="com.venink.slec.entity.Admin">
+    INSERT INTO
+    admin(user_name,email,password,real_name,age,phone_number,head_picture,add_date,state)
+    VALUES
+    (#{userName},#{email},#{password},#{realName},#{age},#{phoneNumber},#{headPicture},#{addDate},
+    #{state})
+  </insert>
+
+  <!--根据传入的id来修改-->
+  <update id="updateAdmin" parameterType="com.venink.slec.entity.Admin">
+    update admin
+    <set>
+      /*当属性不为空的时候 就要做改变*/
+      <if test="email != null">email=#{email},</if>
+      <if test="password != null">password=#{password},</if>
+      <if test="realName != null">real_name=#{realName},</if>
+      <if test="age != null">age = #{age},</if>
+      <if test="phoneNumber != null">phone_number=#{phoneNumber},</if>
+      <if test="headPicture != null">head_picture=#{headPicture},</if>
+      <if test="updateDate != null">update_date=#{updateDate},</if>
+    </set>
+    where user_name=#{userName}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.Admin" >
+    insert into admin (id, user_name, email, 
+      password, real_name, age, 
+      phone_number, head_picture, add_date, 
+      update_date, state)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
+      #{phoneNumber,jdbcType=VARCHAR}, #{headPicture,jdbcType=VARCHAR}, #{addDate,jdbcType=DATE}, 
+      #{updateDate,jdbcType=DATE}, #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.Admin" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number,
+      </if>
+      <if test="headPicture != null" >
+        head_picture,
+      </if>
+      <if test="addDate != null" >
+        add_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="headPicture != null" >
+        #{headPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="addDate != null" >
+        #{addDate,jdbcType=DATE},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.Admin" >
+    update admin
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="headPicture != null" >
+        head_picture = #{headPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="addDate != null" >
+        add_date = #{addDate,jdbcType=DATE},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.Admin" >
+    update admin
+    set user_name = #{userName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      head_picture = #{headPicture,jdbcType=VARCHAR},
+      add_date = #{addDate,jdbcType=DATE},
+      update_date = #{updateDate,jdbcType=DATE},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

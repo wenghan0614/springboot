@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
+    <result column="project_type" property="projectType" jdbcType="INTEGER" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="sms_num" property="smsNum" jdbcType="VARCHAR" />
+    <result column="sms_status" property="smsStatus" jdbcType="VARCHAR" />
+    <result column="sms_time" property="smsTime" jdbcType="DATE" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="handle_status" property="handleStatus" jdbcType="VARCHAR" />
+    <result column="handle_time" property="handleTime" jdbcType="DATE" />
+    <result column="src_address" property="srcAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, user_name, sex, birthday, email, region, location, phone_num, paper_status, 
+    project_type, pay_status, sms_num, sms_status, sms_time, create_time, handle_status, 
+    handle_time, src_address
+  </sql>
+
+  <!--查询所有列表-->
+  <select id="queryUsers" resultMap="BaseResultMap">
+    SELECT phone_num,user_name,sex,birthday,email,region,location,paper_status,
+    project_type,pay_status,create_time
+    FROM  tb_user
+    ORDER BY create_time DESC
+  </select>
+  <!--指定手机号查询-->
+  <select id="queryUserByPhoneNum" resultMap="BaseResultMap">
+    SELECT phone_num,user_name,sex,birthday,email,region,location,paper_status,
+    project_type,pay_status,create_time
+    FROM  tb_user
+    WHERE
+    phone_num = #{phoneNum} ORDER BY create_time DESC
+  </select>
+
+  <!--按人名模糊查询-->
+  <select id="queryUserByName" resultMap="BaseResultMap">
+    SELECT phone_num,user_name,sex,birthday,email,region,location,paper_status,
+    project_type,pay_status,create_time
+    FROM  tb_user
+    WHERE
+    user_name LIKE "%"#{userName}"%"
+  </select>
+  <!--useGeneratedKeys="true" 插入 成功 返回主键的值-->
+  <insert id="insertUser" useGeneratedKeys="true" keyProperty="phoneNum"
+          keyColumn="phone_num" parameterType="com.venink.slec.entity.User">
+    INSERT INTO
+    tb_user(phone_num,user_name,sex,birthday,email,region,location,paper_status,
+    project_type,pay_status,create_time)
+    VALUES
+    (#{phoneNum},#{userName},#{sex},#{birthday},#{email},#{region},#{location},#{paperStatus},
+    #{projectType},#{payStatus},#{createTime})
+  </insert>
+
+  <!--根据传入的phone_num来修改-->
+  <update id="updateUser" parameterType="com.venink.slec.entity.User">
+    update tb_user
+    <set>
+      /*当属性不为空的时候 就要做改变*/
+      <if test="sex != null">sex=#{sex},</if>
+      <if test="email != null">email=#{email},</if>
+      <if test="region != null">region=#{region},</if>
+      <if test="location != null">location=#{location},</if>
+      <if test="paperStatus != null">paper_status = #{paperStatus},</if>
+      <if test="projectType != null">project_type=#{projectType},</if>
+      <if test="payStatus != null">pay_status=#{payStatus},</if>
+    </set>
+    where phone_num=#{phoneNum}
+  </update>
+
+  <delete id="deleteUser">
+    DELETE FROM
+    tb_user
+    WHERE
+    phone_num = #{phoneNum}
+  </delete>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.User" >
+    insert into tb_user (id, order_id, user_name, 
+      sex, birthday, email, 
+      region, location, phone_num, 
+      paper_status, project_type, pay_status, 
+      sms_num, sms_status, sms_time, 
+      create_time, handle_status, handle_time, 
+      src_address)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{email,jdbcType=VARCHAR}, 
+      #{region,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
+      #{paperStatus,jdbcType=INTEGER}, #{projectType,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
+      #{smsNum,jdbcType=VARCHAR}, #{smsStatus,jdbcType=VARCHAR}, #{smsTime,jdbcType=DATE}, 
+      #{createTime,jdbcType=DATE}, #{handleStatus,jdbcType=VARCHAR}, #{handleTime,jdbcType=DATE}, 
+      #{srcAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.User" >
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="region != null" >
+        region,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="phoneNum != null" >
+        phone_num,
+      </if>
+      <if test="paperStatus != null" >
+        paper_status,
+      </if>
+      <if test="projectType != null" >
+        project_type,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="smsNum != null" >
+        sms_num,
+      </if>
+      <if test="smsStatus != null" >
+        sms_status,
+      </if>
+      <if test="smsTime != null" >
+        sms_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="handleStatus != null" >
+        handle_status,
+      </if>
+      <if test="handleTime != null" >
+        handle_time,
+      </if>
+      <if test="srcAddress != null" >
+        src_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null" >
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null" >
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="paperStatus != null" >
+        #{paperStatus,jdbcType=INTEGER},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="smsNum != null" >
+        #{smsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="smsStatus != null" >
+        #{smsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="smsTime != null" >
+        #{smsTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="handleStatus != null" >
+        #{handleStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="handleTime != null" >
+        #{handleTime,jdbcType=DATE},
+      </if>
+      <if test="srcAddress != null" >
+        #{srcAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.User" >
+    update tb_user
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null" >
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null" >
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="paperStatus != null" >
+        paper_status = #{paperStatus,jdbcType=INTEGER},
+      </if>
+      <if test="projectType != null" >
+        project_type = #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="smsNum != null" >
+        sms_num = #{smsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="smsStatus != null" >
+        sms_status = #{smsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="smsTime != null" >
+        sms_time = #{smsTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="handleStatus != null" >
+        handle_status = #{handleStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="handleTime != null" >
+        handle_time = #{handleTime,jdbcType=DATE},
+      </if>
+      <if test="srcAddress != null" >
+        src_address = #{srcAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.User" >
+    update tb_user
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      email = #{email,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      phone_num = #{phoneNum,jdbcType=VARCHAR},
+      paper_status = #{paperStatus,jdbcType=INTEGER},
+      project_type = #{projectType,jdbcType=INTEGER},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      sms_num = #{smsNum,jdbcType=VARCHAR},
+      sms_status = #{smsStatus,jdbcType=VARCHAR},
+      sms_time = #{smsTime,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=DATE},
+      handle_status = #{handleStatus,jdbcType=VARCHAR},
+      handle_time = #{handleTime,jdbcType=DATE},
+      src_address = #{srcAddress,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

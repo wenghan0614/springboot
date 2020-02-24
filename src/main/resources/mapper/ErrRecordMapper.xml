@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.ErrRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.ErrRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="person_id" property="personId" jdbcType="INTEGER" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="err_msg" property="errMsg" jdbcType="VARCHAR" />
+    <result column="err_type" property="errType" jdbcType="CHAR" />
+    <result column="device_s_n" property="deviceSN" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, person_id, person_name, err_msg, err_type, device_s_n
+  </sql>
+
+  <!--按条件查询列表-->
+  <select id="queryByCondition" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.ErrRecord">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM err_record
+    <where>
+      1=1
+      <if test="personId !=null">
+        AND person_id LIKE CONCAT(CONCAT('%',#{personId}),'%')
+      </if>
+      <if test="personName !=null">
+        AND person_name LIKE CONCAT(CONCAT('%',#{personName}),'%')
+      </if>
+      <if test="errType !=null">
+        AND err_type LIKE CONCAT(CONCAT('%',#{errType}),'%')
+      </if>
+      <if test="deviceSN !=null">
+        AND device_s_n LIKE CONCAT(CONCAT('%',#{deviceSN}),'%')
+      </if>
+    </where>
+    LIMIT #{start},#{end};
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByConditionWithoutLimit" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.ErrRecord">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM err_record
+    <where>
+      1=1
+      <if test="personId !=null">
+        AND person_id LIKE CONCAT(CONCAT('%',#{personId}),'%')
+      </if>
+      <if test="personName !=null">
+        AND person_name LIKE CONCAT(CONCAT('%',#{personName}),'%')
+      </if>
+      <if test="errType !=null">
+        AND err_type LIKE CONCAT(CONCAT('%',#{errType}),'%')
+      </if>
+      <if test="deviceSN !=null">
+        AND device_s_n LIKE CONCAT(CONCAT('%',#{deviceSN}),'%')
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from err_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from err_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.ErrRecord" >
+    insert into err_record (id, person_id, person_name, 
+      err_msg, err_type, device_s_n
+      )
+    values (#{id,jdbcType=INTEGER}, #{personId,jdbcType=INTEGER}, #{personName,jdbcType=VARCHAR}, 
+      #{errMsg,jdbcType=VARCHAR}, #{errType,jdbcType=CHAR}, #{deviceSN,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.ErrRecord" >
+    insert into err_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="errMsg != null" >
+        err_msg,
+      </if>
+      <if test="errType != null" >
+        err_type,
+      </if>
+      <if test="deviceSN != null" >
+        device_s_n,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="errMsg != null" >
+        #{errMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errType != null" >
+        #{errType,jdbcType=CHAR},
+      </if>
+      <if test="deviceSN != null" >
+        #{deviceSN,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.ErrRecord" >
+    update err_record
+    <set >
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="errMsg != null" >
+        err_msg = #{errMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errType != null" >
+        err_type = #{errType,jdbcType=CHAR},
+      </if>
+      <if test="deviceSN != null" >
+        device_s_n = #{deviceSN,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.ErrRecord" >
+    update err_record
+    set person_id = #{personId,jdbcType=INTEGER},
+      person_name = #{personName,jdbcType=VARCHAR},
+      err_msg = #{errMsg,jdbcType=VARCHAR},
+      err_type = #{errType,jdbcType=CHAR},
+      device_s_n = #{deviceSN,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

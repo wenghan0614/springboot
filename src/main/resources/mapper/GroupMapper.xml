@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.Group" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="create_man_id" property="createManId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_man_id" property="updateManId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, create_man_id, create_time, update_man_id, update_time, group_name
+  </sql>
+
+  <!--查询唯一性：组名-->
+  <select id="selectGroupIdByGroupName" resultType="java.lang.Integer">
+    SELECT
+    id
+    FROM cwa_group
+    <where>
+      group_name = #{groupName}
+    </where>
+  </select>
+
+  <!--查询所有数据-->
+  <select id="queryAllData" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cwa_group
+  </select>
+
+  <!--查询唯一性：组名-->
+  <select id="selectUnique" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cwa_group
+    <where>
+      group_name = #{groupName}
+    </where>
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByCondition" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Group">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cwa_group
+    <where>
+      1=1
+      <if test="groupName !=null">
+        AND group_name LIKE CONCAT(CONCAT('%',#{groupName}),'%')
+      </if>
+    </where>
+    LIMIT #{start},#{end};
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByConditionWithoutLimit" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Group">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cwa_group
+    <where>
+      1=1
+      <if test="groupName !=null">
+        AND group_name LIKE CONCAT(CONCAT('%',#{groupName}),'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_group
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cwa_group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.Group" >
+    insert into cwa_group (id, create_man_id, create_time, 
+      update_man_id, update_time, group_name
+      )
+    values (#{id,jdbcType=INTEGER}, #{createManId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateManId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{groupName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.Group" >
+    insert into cwa_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createManId != null" >
+        create_man_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateManId != null" >
+        update_man_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createManId != null" >
+        #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.Group" >
+    update cwa_group
+    <set >
+      <if test="createManId != null" >
+        create_man_id = #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        update_man_id = #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.Group" >
+    update cwa_group
+    set create_man_id = #{createManId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_man_id = #{updateManId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      group_name = #{groupName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>操作记录管理</title>
+
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet" />
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+
+<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet"/>
+<link th:href="@{/css/plugins/footable/footable.core.css}" rel="stylesheet"/>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+	<nav class="navbar-default navbar-static-side" role="navigation" th:include="nav :: navigation"></nav>
+	<div id="page-wrapper" class="gray-bg">
+		<div class="border-bottom" th:include="header :: headerTop"></div>
+		<div class="row wrapper border-bottom white-bg page-heading" th:fragment="headerNav">
+			<div class="col-lg-10">
+				<h2>操作记录管理</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a href="#">首页</a>
+					</li>
+					<li class="active">
+						<strong>操作记录管理</strong>
+					</li>
+				</ol>
+			</div>
+			<div class="col-lg-2">
+			</div>
+		</div>
+
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<h5>筛选&amp;查找</h5>
+							<div class="ibox-tools">
+								<a class="collapse-link">
+									<i class="fa fa-chevron-up"></i>
+								</a>
+							</div>
+						</div>
+						<div class="ibox-content" style="display: block;">
+							<form action="/operate/operateManage_0_0_0" class="form-inline">
+								<div class="row">
+									<div class="form-group">
+										<label for="personId">&nbsp;&nbsp;人员编号：</label>
+										<input id="personId" name="personId" placeholder="输入权限组名称" style="width: 150px" class="form-control"
+											   type="text" th:value="${operate.personId}"/>
+									</div>
+									<div class="form-group">
+										<select name="operateType" id="operateType" class="form-control">
+											<option value="" th:selected="${operate.operateType == ''}" selected>
+												--请选择操作类型--
+											</option>
+											<option value="1" th:selected="${operate.operateType == 1}">新增</option>
+											<option value="2" th:selected="${operate.operateType == 2}">修改</option>
+											<option value="3" th:selected="${operate.operateType == 3}">删除</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<select name="operateState" id="operateState" class="form-control">
+											<option value="" th:selected="${operate.operateState == ''}" selected>
+												--请选择操作状态--
+											</option>
+											<option value="0" th:selected="${operate.operateState == 0}">未操作</option>
+											<option value="1" th:selected="${operate.operateState == 1}">已操作</option>
+										</select>
+									</div>
+									<br/>
+									<div class="col-sm-offset-4 col-sm-3" style="margin-top: 15px;">
+										<button class="btn btn-primary btn-block" type="submit"><i
+												class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;<strong>筛选</strong>
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<h5>权限组列表</h5>
+							<div class="ibox-tools">
+								<a class="collapse-link">
+									<i class="fa fa-chevron-up"></i>
+								</a>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<div class="table-responsive">
+								<table class=" table table-bordered table-hover" data-page-size="10">
+									<thead>
+									<tr style="text-align: center">
+										<th style="width:15%;">编号</th>
+										<th style="width:5%;">人员编号</th>
+										<th style="width:5%;">操作类型</th>
+										<th style="width:5%;">操作状态</th>
+										<th style="width:5%;">查看详细</th>
+										<th style="width:5%;">处理</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr th:each="operate : ${operates}">
+										<td th:text="${operate.id}">Onions</td>
+										<td th:text="${operate.personId}">Onions</td>
+										<div th:switch="${operate.operateType}">
+											<td th:case=1 >新增</td>
+											<td th:case=2 >修改</td>
+											<td th:case=3 >删除</td>
+										</div>
+										<div th:switch="${operate.operateState}">
+											<td th:case=0 >未操作</td>
+											<td th:case=1 >已操作</td>
+										</div>
+										<td>
+											&nbsp;&nbsp;
+											<a th:href="@{'./orderDetail?orderId='+${operate.id}}" title="查看详细"><i
+													class="glyphicon glyphicon-search"></i></a>
+											&nbsp;&nbsp;
+										</td>
+										<td>
+											&nbsp;&nbsp;
+											<a th:href="@{'./orderHandle?orderId='+${operate.id}}" title="处理"><i
+													class="glyphicon glyphicon-plus"></i></a>
+											&nbsp;&nbsp;
+										</td>
+									</tr>
+									</tbody>
+									<tfoot>
+									<tr>
+										<td colspan="12">
+											<ul id="pageHTML" class="pagination pull-right"></ul>
+										</td>
+									</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer" th:include="footer :: copyright"></div>
+	</div>
+</div>
+
+<!-- Mainly scripts -->
+<script th:src="@{/js/jquery-2.1.1.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+
+<!-- Custom and plugin javascript -->
+<script th:src="@{/js/inspinia.js}"></script>
+<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+
+<!-- Peity -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+
+<!-- FooTable -->
+<script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+
+<!-- common -->
+<script th:src="@{/js/common.js}"></script>
+
+<script th:inline="javascript">
+    var pageHTML = [[${pageHTML}]];
+    $(document).ready(function () {
+        $("#pageHTML").html(pageHTML);
+    });
+</script>
+
+</body>
+</html>

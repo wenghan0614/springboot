@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8"/>
+<title>订单信息管理</title>
+</head>
+<body>
+	<nav class="navbar-default navbar-static-side" role="navigation" th:fragment="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> 
+                    	<span>
+                            <img alt="image" class="img-circle" th:src="@{/img/profile_small.jpg}" />
+						</span>
+                    	<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> 
+                            	<span class="block m-t-xs">
+                            		<strong class="font-bold">管理员</strong>
+                             	</span> 
+                             </span>
+                     	</a>
+                    </div>
+                    <div class="logo-element">
+                       VENINK
+                    </div>
+                </li>
+                <li>
+                    <a th:href="@{/order/orderManage_0_0_0}"><i class="fa fa-diamond"></i> <span class="nav-label">订单管理</span></a>
+                    <a th:href="@{/group/groupManage_0_0_0}"><i class="fa fa-indent" aria-hidden="true"></i> <span class="nav-label">权限组管理</span></a>
+                    <a th:href="@{/device/deviceManage_0_0_0}"><i class="fa fa-cogs" aria-hidden="true"></i> <span class="nav-label">设备管理</span></a>
+                    <a th:href="@{/person/personManage_0_0_0}"><i class="fa fa-user" aria-hidden="true"></i> <span class="nav-label">人员管理</span></a>
+                    <a th:href="@{/operate/operateManage_0_0_0}"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span class="nav-label">操作记录管理</span></a>
+                    <a th:href="@{/errRecord/errRecordManage_0_0_0}"><i class="fa fa-file-text" aria-hidden="true"></i> <span class="nav-label">异常记录管理</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</body>
+</html>
+
+
+

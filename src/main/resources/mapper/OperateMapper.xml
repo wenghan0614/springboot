@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.OperateMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.Operate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="operate_type" property="operateType" jdbcType="INTEGER" />
+    <result column="person_id" property="personId" jdbcType="INTEGER" />
+    <result column="operate_state" property="operateState" jdbcType="INTEGER" />
+    <result column="device_id" property="deviceId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, operate_type, person_id, operate_state, device_id
+  </sql>
+
+  <!-- myself:批量插入 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into cwa_operate
+    (operate_type, person_id, operate_state, device_id)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+        #{item.operateType,jdbcType = INTEGER},
+        #{item.personId,jdbcType = INTEGER},
+        #{item.operateState,jdbcType = INTEGER},
+        #{item.deviceId,jdbcType = INTEGER}
+      )
+    </foreach>
+  </insert>
+
+  <!--按条件查询列表-->
+  <select id="queryByCondition" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Operate">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cwa_operate
+    <where>
+      1=1
+      <if test="operateType !=null">
+        AND operate_type = #{operateType}
+      </if>
+      <if test="personId !=null">
+        AND person_id LIKE CONCAT(CONCAT('%',#{personId}),'%')
+      </if>
+      <if test="operateState !=null">
+        AND operate_state = #{operateState}
+      </if>
+    </where>
+    LIMIT #{start},#{end};
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByConditionWithoutLimit" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Operate">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cwa_operate
+    <where>
+      1=1
+      <if test="operateType !=null">
+        AND operate_type = #{operateType}
+      </if>
+      <if test="personId !=null">
+        AND person_id LIKE CONCAT(CONCAT('%',#{personId}),'%')
+      </if>
+      <if test="operateState !=null">
+        AND operate_state = #{operateState}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_operate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cwa_operate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.Operate" >
+    insert into cwa_operate (id, operate_type, person_id, 
+      operate_state, device_id)
+    values (#{id,jdbcType=INTEGER}, #{operateType,jdbcType=INTEGER}, #{personId,jdbcType=INTEGER}, 
+      #{operateState,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.Operate" >
+    insert into cwa_operate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="operateType != null" >
+        operate_type,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="operateState != null" >
+        operate_state,
+      </if>
+      <if test="deviceId != null" >
+        device_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operateType != null" >
+        #{operateType,jdbcType=INTEGER},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="operateState != null" >
+        #{operateState,jdbcType=INTEGER},
+      </if>
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.Operate" >
+    update cwa_operate
+    <set >
+      <if test="operateType != null" >
+        operate_type = #{operateType,jdbcType=INTEGER},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="operateState != null" >
+        operate_state = #{operateState,jdbcType=INTEGER},
+      </if>
+      <if test="deviceId != null" >
+        device_id = #{deviceId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.Operate" >
+    update cwa_operate
+    set operate_type = #{operateType,jdbcType=INTEGER},
+      person_id = #{personId,jdbcType=INTEGER},
+      operate_state = #{operateState,jdbcType=INTEGER},
+      device_id = #{deviceId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

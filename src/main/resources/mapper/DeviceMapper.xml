@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.venink.slec.dao.DeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.venink.slec.entity.Device" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="create_man_id" property="createManId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_man_id" property="updateManId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="device_name" property="deviceName" jdbcType="VARCHAR" />
+    <result column="device_type" property="deviceType" jdbcType="VARCHAR" />
+    <result column="about_user" property="aboutUser" jdbcType="VARCHAR" />
+    <result column="device_ip" property="deviceIp" jdbcType="VARCHAR" />
+    <result column="device_port" property="devicePort" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="distinguish_mod" property="distinguishMod" jdbcType="INTEGER" />
+    <result column="distinguish_range" property="distinguishRange" jdbcType="VARCHAR" />
+    <result column="distinguish_score" property="distinguishScore" jdbcType="INTEGER" />
+    <result column="open_delay" property="openDelay" jdbcType="INTEGER" />
+    <result column="out_type" property="outType" jdbcType="INTEGER" />
+    <result column="out_order" property="outOrder" jdbcType="INTEGER" />
+    <result column="out_format" property="outFormat" jdbcType="INTEGER" />
+    <result column="device_sn" property="deviceSn" jdbcType="VARCHAR" />
+    <result column="in_out_type" property="inOutType" jdbcType="INTEGER" />
+    <result column="in_out_mark" property="inOutMark" jdbcType="INTEGER" />
+    <result column="device_address" property="deviceAddress" jdbcType="INTEGER" />
+    <result column="floor_number" property="floorNumber" jdbcType="INTEGER" />
+    <result column="sync_state" property="syncState" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="hide_user_num" property="hideUserNum" jdbcType="INTEGER" />
+    <result column="hide_pass_name" property="hidePassName" jdbcType="INTEGER" />
+    <result column="cancel_play_speech" property="cancelPlaySpeech" jdbcType="INTEGER" />
+    <result column="qr_code_transfer_ic_card" property="qrCodeTransferIcCard" jdbcType="INTEGER" />
+    <result column="heartbeat_interval" property="heartbeatInterval" jdbcType="INTEGER" />
+    <result column="last_sync_time" property="lastSyncTime" jdbcType="INTEGER" />
+    <result column="verify_type" property="verifyType" jdbcType="INTEGER" />
+    <result column="verify_url" property="verifyUrl" jdbcType="VARCHAR" />
+    <result column="device_save_record_state" property="deviceSaveRecordState" jdbcType="INTEGER" />
+    <result column="verify_timeout" property="verifyTimeout" jdbcType="INTEGER" />
+    <result column="unresponsive_processing" property="unresponsiveProcessing" jdbcType="INTEGER" />
+    <result column="web_socket_uri" property="webSocketUri" jdbcType="VARCHAR" />
+    <result column="stranger_handling" property="strangerHandling" jdbcType="INTEGER" />
+    <result column="temperature_detection_type" property="temperatureDetectionType" jdbcType="INTEGER" />
+    <result column="alarm_temperature" property="alarmTemperature" jdbcType="VARCHAR" />
+    <result column="detection_mask_flag" property="detectionMaskFlag" jdbcType="INTEGER" />
+
+      <collection property="group" ofType="com.venink.slec.entity.Group">
+        <id column="gid" property="id" jdbcType="INTEGER" />
+        <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+      </collection>
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, create_man_id, create_time, update_man_id, update_time, device_name, device_type, 
+    about_user, device_ip, device_port, company_name, distinguish_mod, distinguish_range, 
+    distinguish_score, open_delay, out_type, out_order, out_format, device_sn, in_out_type, 
+    in_out_mark, device_address, floor_number, sync_state, group_id, hide_user_num, hide_pass_name, 
+    cancel_play_speech, qr_code_transfer_ic_card, heartbeat_interval, last_sync_time, 
+    verify_type, verify_url, device_save_record_state, verify_timeout, unresponsive_processing, 
+    web_socket_uri, stranger_handling, temperature_detection_type, alarm_temperature, 
+    detection_mask_flag
+  </sql>
+
+  <sql id="Join_Column_List" >
+    a.id as id, a.create_man_id as create_man_id, a.create_time as create_time, a.update_man_id as update_man_id,
+    a.update_time as update_time, a.device_name as device_name, a.device_type as device_type,
+    a.about_user as about_user, a.device_ip as device_ip, a.device_port as device_port, a.company_name as company_name,
+    a.distinguish_mod as distinguish_mod, a.distinguish_range as distinguish_range,
+    a.distinguish_score as distinguish_score, a.open_delay as open_delay, a.out_type as out_type,
+    a.out_order as out_order, a.out_format as out_format, a.device_sn as device_sn, a.in_out_type as in_out_type,
+    a.in_out_mark as in_out_mark, a.device_address asdevice_address , a.floor_number as floor_number,
+    a.sync_state as sync_state, a.group_id as group_id, a.hide_user_num as hide_user_num, a.hide_pass_name as hide_pass_name,
+    a.cancel_play_speech as cancel_play_speech, a.qr_code_transfer_ic_card as qr_code_transfer_ic_card,
+    a.heartbeat_interval as heartbeat_interval, a.last_sync_time as last_sync_time,
+    a.verify_type as verify_type, a.verify_url as verify_url, a.device_save_record_state as device_save_record_state,
+    a.verify_timeout as verify_timeout, a.unresponsive_processing as unresponsive_processing,
+    a.web_socket_uri as web_socket_uri, a.stranger_handling as stranger_handling, a.temperature_detection_type as temperature_detection_type,
+    a.alarm_temperature as alarm_temperature, a.detection_mask_flag as detection_mask_flag,
+    b.group_name as group_name, b.id as gid
+  </sql>
+
+  <!--根据主键联表查询-->
+  <select id="selectDeviceByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from eq_device
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+
+  <!--查询更新唯一性：设备名称/设备序列号-->
+  <select id="selectDeviceByDeviceSn" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM eq_device
+    where
+    device_sn = #{deviceSn}
+  </select>
+
+  <!--根据主键联表查询-->
+  <select id="selectJoinByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Join_Column_List" />
+    from eq_device as a
+    left JOIN cwa_group as b on (a.group_id = b.id)
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--查询更新唯一性：设备名称/设备序列号-->
+  <select id="selectUniqueRenew" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM eq_device
+    where
+    (
+    device_name = #{deviceName}
+    OR
+    device_sn = #{deviceSn}
+    )
+    AND
+    id != #{id}
+  </select>
+
+  <!--查询唯一性：设备名称/设备序列号-->
+  <select id="selectUnique" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM eq_device
+    <where>
+      device_name = #{deviceName}
+      OR
+      device_sn = #{deviceSn}
+    </where>
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByCondition" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Device">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM eq_device
+    <where>
+      1=1
+      <if test="deviceName !=null">
+        AND device_name LIKE CONCAT(CONCAT('%',#{deviceName}),'%')
+      </if>
+      <if test="companyName !=null">
+        AND company_name LIKE CONCAT(CONCAT('%',#{companyName}),'%')
+      </if>
+      <if test="deviceSn !=null">
+        AND device_sn LIKE CONCAT(CONCAT('%',#{deviceSn}),'%')
+      </if>
+    </where>
+    LIMIT #{start},#{end};
+  </select>
+
+  <!--按条件查询列表-->
+  <select id="queryByConditionWithoutLimit" resultMap="BaseResultMap"
+          parameterType="com.venink.slec.entity.Device">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM eq_device
+    <where>
+      1=1
+      <if test="deviceName !=null">
+        AND device_name LIKE CONCAT(CONCAT('%',#{deviceName}),'%')
+      </if>
+      <if test="companyName !=null">
+        AND company_name LIKE CONCAT(CONCAT('%',#{companyName}),'%')
+      </if>
+      <if test="deviceSn !=null">
+        AND device_sn LIKE CONCAT(CONCAT('%',#{deviceSn}),'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from eq_device
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from eq_device
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.venink.slec.entity.Device" >
+    insert into eq_device (id, create_man_id, create_time, 
+      update_man_id, update_time, device_name, 
+      device_type, about_user, device_ip, 
+      device_port, company_name, distinguish_mod, 
+      distinguish_range, distinguish_score, open_delay, 
+      out_type, out_order, out_format, 
+      device_sn, in_out_type, in_out_mark, 
+      device_address, floor_number, sync_state, 
+      group_id, hide_user_num, hide_pass_name, 
+      cancel_play_speech, qr_code_transfer_ic_card, 
+      heartbeat_interval, last_sync_time, verify_type, 
+      verify_url, device_save_record_state, verify_timeout, 
+      unresponsive_processing, web_socket_uri, stranger_handling, 
+      temperature_detection_type, alarm_temperature, 
+      detection_mask_flag)
+    values (#{id,jdbcType=INTEGER}, #{createManId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateManId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{deviceName,jdbcType=VARCHAR}, 
+      #{deviceType,jdbcType=VARCHAR}, #{aboutUser,jdbcType=VARCHAR}, #{deviceIp,jdbcType=VARCHAR}, 
+      #{devicePort,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{distinguishMod,jdbcType=INTEGER}, 
+      #{distinguishRange,jdbcType=VARCHAR}, #{distinguishScore,jdbcType=INTEGER}, #{openDelay,jdbcType=INTEGER}, 
+      #{outType,jdbcType=INTEGER}, #{outOrder,jdbcType=INTEGER}, #{outFormat,jdbcType=INTEGER}, 
+      #{deviceSn,jdbcType=VARCHAR}, #{inOutType,jdbcType=INTEGER}, #{inOutMark,jdbcType=INTEGER}, 
+      #{deviceAddress,jdbcType=INTEGER}, #{floorNumber,jdbcType=INTEGER}, #{syncState,jdbcType=INTEGER}, 
+      #{groupId,jdbcType=INTEGER}, #{hideUserNum,jdbcType=INTEGER}, #{hidePassName,jdbcType=INTEGER}, 
+      #{cancelPlaySpeech,jdbcType=INTEGER}, #{qrCodeTransferIcCard,jdbcType=INTEGER}, 
+      #{heartbeatInterval,jdbcType=INTEGER}, #{lastSyncTime,jdbcType=INTEGER}, #{verifyType,jdbcType=INTEGER}, 
+      #{verifyUrl,jdbcType=VARCHAR}, #{deviceSaveRecordState,jdbcType=INTEGER}, #{verifyTimeout,jdbcType=INTEGER}, 
+      #{unresponsiveProcessing,jdbcType=INTEGER}, #{webSocketUri,jdbcType=VARCHAR}, #{strangerHandling,jdbcType=INTEGER}, 
+      #{temperatureDetectionType,jdbcType=INTEGER}, #{alarmTemperature,jdbcType=VARCHAR}, 
+      #{detectionMaskFlag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.Device" >
+    insert into eq_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createManId != null" >
+        create_man_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateManId != null" >
+        update_man_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="deviceName != null" >
+        device_name,
+      </if>
+      <if test="deviceType != null" >
+        device_type,
+      </if>
+      <if test="aboutUser != null" >
+        about_user,
+      </if>
+      <if test="deviceIp != null" >
+        device_ip,
+      </if>
+      <if test="devicePort != null" >
+        device_port,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="distinguishMod != null" >
+        distinguish_mod,
+      </if>
+      <if test="distinguishRange != null" >
+        distinguish_range,
+      </if>
+      <if test="distinguishScore != null" >
+        distinguish_score,
+      </if>
+      <if test="openDelay != null" >
+        open_delay,
+      </if>
+      <if test="outType != null" >
+        out_type,
+      </if>
+      <if test="outOrder != null" >
+        out_order,
+      </if>
+      <if test="outFormat != null" >
+        out_format,
+      </if>
+      <if test="deviceSn != null" >
+        device_sn,
+      </if>
+      <if test="inOutType != null" >
+        in_out_type,
+      </if>
+      <if test="inOutMark != null" >
+        in_out_mark,
+      </if>
+      <if test="deviceAddress != null" >
+        device_address,
+      </if>
+      <if test="floorNumber != null" >
+        floor_number,
+      </if>
+      <if test="syncState != null" >
+        sync_state,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="hideUserNum != null" >
+        hide_user_num,
+      </if>
+      <if test="hidePassName != null" >
+        hide_pass_name,
+      </if>
+      <if test="cancelPlaySpeech != null" >
+        cancel_play_speech,
+      </if>
+      <if test="qrCodeTransferIcCard != null" >
+        qr_code_transfer_ic_card,
+      </if>
+      <if test="heartbeatInterval != null" >
+        heartbeat_interval,
+      </if>
+      <if test="lastSyncTime != null" >
+        last_sync_time,
+      </if>
+      <if test="verifyType != null" >
+        verify_type,
+      </if>
+      <if test="verifyUrl != null" >
+        verify_url,
+      </if>
+      <if test="deviceSaveRecordState != null" >
+        device_save_record_state,
+      </if>
+      <if test="verifyTimeout != null" >
+        verify_timeout,
+      </if>
+      <if test="unresponsiveProcessing != null" >
+        unresponsive_processing,
+      </if>
+      <if test="webSocketUri != null" >
+        web_socket_uri,
+      </if>
+      <if test="strangerHandling != null" >
+        stranger_handling,
+      </if>
+      <if test="temperatureDetectionType != null" >
+        temperature_detection_type,
+      </if>
+      <if test="alarmTemperature != null" >
+        alarm_temperature,
+      </if>
+      <if test="detectionMaskFlag != null" >
+        detection_mask_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createManId != null" >
+        #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceName != null" >
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="aboutUser != null" >
+        #{aboutUser,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceIp != null" >
+        #{deviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="devicePort != null" >
+        #{devicePort,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="distinguishMod != null" >
+        #{distinguishMod,jdbcType=INTEGER},
+      </if>
+      <if test="distinguishRange != null" >
+        #{distinguishRange,jdbcType=VARCHAR},
+      </if>
+      <if test="distinguishScore != null" >
+        #{distinguishScore,jdbcType=INTEGER},
+      </if>
+      <if test="openDelay != null" >
+        #{openDelay,jdbcType=INTEGER},
+      </if>
+      <if test="outType != null" >
+        #{outType,jdbcType=INTEGER},
+      </if>
+      <if test="outOrder != null" >
+        #{outOrder,jdbcType=INTEGER},
+      </if>
+      <if test="outFormat != null" >
+        #{outFormat,jdbcType=INTEGER},
+      </if>
+      <if test="deviceSn != null" >
+        #{deviceSn,jdbcType=VARCHAR},
+      </if>
+      <if test="inOutType != null" >
+        #{inOutType,jdbcType=INTEGER},
+      </if>
+      <if test="inOutMark != null" >
+        #{inOutMark,jdbcType=INTEGER},
+      </if>
+      <if test="deviceAddress != null" >
+        #{deviceAddress,jdbcType=INTEGER},
+      </if>
+      <if test="floorNumber != null" >
+        #{floorNumber,jdbcType=INTEGER},
+      </if>
+      <if test="syncState != null" >
+        #{syncState,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="hideUserNum != null" >
+        #{hideUserNum,jdbcType=INTEGER},
+      </if>
+      <if test="hidePassName != null" >
+        #{hidePassName,jdbcType=INTEGER},
+      </if>
+      <if test="cancelPlaySpeech != null" >
+        #{cancelPlaySpeech,jdbcType=INTEGER},
+      </if>
+      <if test="qrCodeTransferIcCard != null" >
+        #{qrCodeTransferIcCard,jdbcType=INTEGER},
+      </if>
+      <if test="heartbeatInterval != null" >
+        #{heartbeatInterval,jdbcType=INTEGER},
+      </if>
+      <if test="lastSyncTime != null" >
+        #{lastSyncTime,jdbcType=INTEGER},
+      </if>
+      <if test="verifyType != null" >
+        #{verifyType,jdbcType=INTEGER},
+      </if>
+      <if test="verifyUrl != null" >
+        #{verifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSaveRecordState != null" >
+        #{deviceSaveRecordState,jdbcType=INTEGER},
+      </if>
+      <if test="verifyTimeout != null" >
+        #{verifyTimeout,jdbcType=INTEGER},
+      </if>
+      <if test="unresponsiveProcessing != null" >
+        #{unresponsiveProcessing,jdbcType=INTEGER},
+      </if>
+      <if test="webSocketUri != null" >
+        #{webSocketUri,jdbcType=VARCHAR},
+      </if>
+      <if test="strangerHandling != null" >
+        #{strangerHandling,jdbcType=INTEGER},
+      </if>
+      <if test="temperatureDetectionType != null" >
+        #{temperatureDetectionType,jdbcType=INTEGER},
+      </if>
+      <if test="alarmTemperature != null" >
+        #{alarmTemperature,jdbcType=VARCHAR},
+      </if>
+      <if test="detectionMaskFlag != null" >
+        #{detectionMaskFlag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.venink.slec.entity.Device" >
+    update eq_device
+    <set >
+      <if test="createManId != null" >
+        create_man_id = #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null" >
+        update_man_id = #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceName != null" >
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null" >
+        device_type = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="aboutUser != null" >
+        about_user = #{aboutUser,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceIp != null" >
+        device_ip = #{deviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="devicePort != null" >
+        device_port = #{devicePort,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="distinguishMod != null" >
+        distinguish_mod = #{distinguishMod,jdbcType=INTEGER},
+      </if>
+      <if test="distinguishRange != null" >
+        distinguish_range = #{distinguishRange,jdbcType=VARCHAR},
+      </if>
+      <if test="distinguishScore != null" >
+        distinguish_score = #{distinguishScore,jdbcType=INTEGER},
+      </if>
+      <if test="openDelay != null" >
+        open_delay = #{openDelay,jdbcType=INTEGER},
+      </if>
+      <if test="outType != null" >
+        out_type = #{outType,jdbcType=INTEGER},
+      </if>
+      <if test="outOrder != null" >
+        out_order = #{outOrder,jdbcType=INTEGER},
+      </if>
+      <if test="outFormat != null" >
+        out_format = #{outFormat,jdbcType=INTEGER},
+      </if>
+      <if test="deviceSn != null" >
+        device_sn = #{deviceSn,jdbcType=VARCHAR},
+      </if>
+      <if test="inOutType != null" >
+        in_out_type = #{inOutType,jdbcType=INTEGER},
+      </if>
+      <if test="inOutMark != null" >
+        in_out_mark = #{inOutMark,jdbcType=INTEGER},
+      </if>
+      <if test="deviceAddress != null" >
+        device_address = #{deviceAddress,jdbcType=INTEGER},
+      </if>
+      <if test="floorNumber != null" >
+        floor_number = #{floorNumber,jdbcType=INTEGER},
+      </if>
+      <if test="syncState != null" >
+        sync_state = #{syncState,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="hideUserNum != null" >
+        hide_user_num = #{hideUserNum,jdbcType=INTEGER},
+      </if>
+      <if test="hidePassName != null" >
+        hide_pass_name = #{hidePassName,jdbcType=INTEGER},
+      </if>
+      <if test="cancelPlaySpeech != null" >
+        cancel_play_speech = #{cancelPlaySpeech,jdbcType=INTEGER},
+      </if>
+      <if test="qrCodeTransferIcCard != null" >
+        qr_code_transfer_ic_card = #{qrCodeTransferIcCard,jdbcType=INTEGER},
+      </if>
+      <if test="heartbeatInterval != null" >
+        heartbeat_interval = #{heartbeatInterval,jdbcType=INTEGER},
+      </if>
+      <if test="lastSyncTime != null" >
+        last_sync_time = #{lastSyncTime,jdbcType=INTEGER},
+      </if>
+      <if test="verifyType != null" >
+        verify_type = #{verifyType,jdbcType=INTEGER},
+      </if>
+      <if test="verifyUrl != null" >
+        verify_url = #{verifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSaveRecordState != null" >
+        device_save_record_state = #{deviceSaveRecordState,jdbcType=INTEGER},
+      </if>
+      <if test="verifyTimeout != null" >
+        verify_timeout = #{verifyTimeout,jdbcType=INTEGER},
+      </if>
+      <if test="unresponsiveProcessing != null" >
+        unresponsive_processing = #{unresponsiveProcessing,jdbcType=INTEGER},
+      </if>
+      <if test="webSocketUri != null" >
+        web_socket_uri = #{webSocketUri,jdbcType=VARCHAR},
+      </if>
+      <if test="strangerHandling != null" >
+        stranger_handling = #{strangerHandling,jdbcType=INTEGER},
+      </if>
+      <if test="temperatureDetectionType != null" >
+        temperature_detection_type = #{temperatureDetectionType,jdbcType=INTEGER},
+      </if>
+      <if test="alarmTemperature != null" >
+        alarm_temperature = #{alarmTemperature,jdbcType=VARCHAR},
+      </if>
+      <if test="detectionMaskFlag != null" >
+        detection_mask_flag = #{detectionMaskFlag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.venink.slec.entity.Device" >
+    update eq_device
+    set create_man_id = #{createManId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_man_id = #{updateManId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      device_type = #{deviceType,jdbcType=VARCHAR},
+      about_user = #{aboutUser,jdbcType=VARCHAR},
+      device_ip = #{deviceIp,jdbcType=VARCHAR},
+      device_port = #{devicePort,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      distinguish_mod = #{distinguishMod,jdbcType=INTEGER},
+      distinguish_range = #{distinguishRange,jdbcType=VARCHAR},
+      distinguish_score = #{distinguishScore,jdbcType=INTEGER},
+      open_delay = #{openDelay,jdbcType=INTEGER},
+      out_type = #{outType,jdbcType=INTEGER},
+      out_order = #{outOrder,jdbcType=INTEGER},
+      out_format = #{outFormat,jdbcType=INTEGER},
+      device_sn = #{deviceSn,jdbcType=VARCHAR},
+      in_out_type = #{inOutType,jdbcType=INTEGER},
+      in_out_mark = #{inOutMark,jdbcType=INTEGER},
+      device_address = #{deviceAddress,jdbcType=INTEGER},
+      floor_number = #{floorNumber,jdbcType=INTEGER},
+      sync_state = #{syncState,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=INTEGER},
+      hide_user_num = #{hideUserNum,jdbcType=INTEGER},
+      hide_pass_name = #{hidePassName,jdbcType=INTEGER},
+      cancel_play_speech = #{cancelPlaySpeech,jdbcType=INTEGER},
+      qr_code_transfer_ic_card = #{qrCodeTransferIcCard,jdbcType=INTEGER},
+      heartbeat_interval = #{heartbeatInterval,jdbcType=INTEGER},
+      last_sync_time = #{lastSyncTime,jdbcType=INTEGER},
+      verify_type = #{verifyType,jdbcType=INTEGER},
+      verify_url = #{verifyUrl,jdbcType=VARCHAR},
+      device_save_record_state = #{deviceSaveRecordState,jdbcType=INTEGER},
+      verify_timeout = #{verifyTimeout,jdbcType=INTEGER},
+      unresponsive_processing = #{unresponsiveProcessing,jdbcType=INTEGER},
+      web_socket_uri = #{webSocketUri,jdbcType=VARCHAR},
+      stranger_handling = #{strangerHandling,jdbcType=INTEGER},
+      temperature_detection_type = #{temperatureDetectionType,jdbcType=INTEGER},
+      alarm_temperature = #{alarmTemperature,jdbcType=VARCHAR},
+      detection_mask_flag = #{detectionMaskFlag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
