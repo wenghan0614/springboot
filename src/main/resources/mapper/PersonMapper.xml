@@ -22,6 +22,18 @@
     person_name, person_photo, person_sex, card_no, customer_id_no, state, person_type
   </sql>
 
+  <!--根据人员编号和人员类型查询人员-->
+  <select id="selectPersonByNoAndType" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    pm_person
+    WHERE
+    person_no = #{personNo,jdbcType=VARCHAR}
+    AND
+    person_type = #{personType,jdbcType=VARCHAR}
+  </select>
+
   <!--根据人员编号和人员类型更新人员-->
   <update id="updatePersonByNoAndType" parameterType="com.venink.slec.entity.Person" >
     update pm_person
@@ -139,7 +151,7 @@
       #{personSex,jdbcType=CHAR}, #{cardNo,jdbcType=VARCHAR}, #{customerIdNo,jdbcType=VARCHAR}, 
       #{state,jdbcType=CHAR}, #{personType,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.venink.slec.entity.Person" >
+  <insert id="insertSelective" parameterType="com.venink.slec.entity.Person" useGeneratedKeys="true" keyProperty="id" >
     insert into pm_person
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

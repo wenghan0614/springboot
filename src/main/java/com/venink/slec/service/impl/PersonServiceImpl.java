@@ -23,4 +23,9 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Integer> implemen
     public int updatePersonByNoAndType(Person person) {
         return personMapper.updatePersonByNoAndType(person);
     }
+
+    @Override
+    public Person selectPersonByNoAndType(String personNo, String personType) {
+        return personMapper.selectPersonByNoAndType(personNo,personType);
+    }
 }

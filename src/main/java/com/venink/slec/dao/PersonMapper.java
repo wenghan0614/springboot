@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Param;
 public interface PersonMapper extends BaseDao<Person, Integer> {
 
     int updatePersonByNoAndType(Person person);
+
+    Person selectPersonByNoAndType(@Param("personNo")String personNo, @Param("personType")String personType);
 }
